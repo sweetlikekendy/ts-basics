@@ -51,3 +51,7 @@ const pokemon: Pokemon[] = [
 const ranks = ranker(pokemon, ({ hp }) => hp)
 
 console.log(ranks)
+
+function identity<Type>(arg: Type): Type {
+  return arg
+}
