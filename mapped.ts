@@ -1,14 +1,48 @@
-console.log("hello")
+type MyFlexibleDogInfo = {
+  name: string
+  [key: string]: string | number
+}
 
-// interface GenericIdentityFn<Type> {
-//   (arg: Type): Type
-// }
+const dog1: MyFlexibleDogInfo = {
+  name: "Bob",
+  breed: "Golden",
+  age: 1,
+}
 
-// function identity<Type>(arg: Type): Type {
-//   return arg
-// }
+interface DogInfo {
+  name: string
+  age: number
+}
 
-// let myIdentity: GenericIdentityFn<number> = identity
-type Ppl = { age: number; name: string; alive: boolean }
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: null
+}
 
-type I2 = Ppl[keyof Ppl]
+type DogInfoOptions = OptionsFlags<DogInfo>
+
+type Listeners<Type> = {
+  [Property in keyof Type as `on${Capitalize<string & Property>}Change`]?: (
+    newValue: Type[Property]
+  ) => void
+} & {
+  [Property in keyof Type as `on${Capitalize<
+    string & Property
+  >}Delete`]?: () => void
+}
+
+function listenToObject<T>(obj: T, listeners: Listeners<T>): void {
+  throw "Needs to be implemented"
+}
+
+const lg: DogInfo = {
+  name: "LG",
+  age: 3,
+}
+
+type DogInfoListeners = Listeners<DogInfo>
+
+listenToObject(lg, {
+  onNameChange: (v: string) => {},
+  onAgeChange: (v: number) => {},
+  onAgeDelete: () => {},
+})
